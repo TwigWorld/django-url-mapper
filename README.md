@@ -1,7 +1,7 @@
 Django URL Mapper
 =================
 
-###The problem
+### The problem
 
 You need to provide a link in your template to something specific, such as a
 terms and conditions page, but you don't know the primary key of the
@@ -14,7 +14,7 @@ switchable content app, for example.
 Or it could just be that the page may or may not exist, and you need to know
 whether to display the URL at all.
 
-###The solution
+### The solution
 
 Django URL mapper allows you to define a set of keys that you can use in your
 template. Think of a URL name and keyword arguments rolled into one.
@@ -126,7 +126,7 @@ form data.
 Advanced Settings
 -----------------
 
-###URLMAPPER_RAISE_EXCEPTION
+### URLMAPPER_RAISE_EXCEPTION
 
 Determines whether the template renderer should raise an exception if there is a
 problem generating the URL (key does not exist or mapping function raises an
@@ -137,7 +137,7 @@ anything.
 
 Default is True.
 
-###URLMAPPER_CONTENTTYPES
+### URLMAPPER_CONTENTTYPES
 
 Restricts the content types that can be used for object mapping.
 
@@ -153,7 +153,7 @@ URLMAPPER_CONTENTTYPES = (
 
 Note that urlmapper is always an excluded app.
 
-###URLMAPPER_ALLOWED_MAPPINGS
+### URLMAPPER_ALLOWED_MAPPINGS
 
 Restricts the type of URL mapping that can be performed using Django admin.
 
