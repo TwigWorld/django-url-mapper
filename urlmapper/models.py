@@ -1,4 +1,4 @@
-from django.contrib.contenttypes.generic import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse, resolve, NoReverseMatch, Resolver404
 from django.db import models
