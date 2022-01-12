@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _, ugettext
 # django/py3
 from django.utils.encoding import python_2_unicode_compatible
 
-import settings
+from urlmapper import settings
 
 
 def _get_key_choices():
