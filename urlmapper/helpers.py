@@ -1,4 +1,4 @@
-from django.conf import settings
+from urlmapper import settings
 
 from .models import URLMap
 
