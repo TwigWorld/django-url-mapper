@@ -1,3 +1,5 @@
+from importlib import reload
+
 from django.test import TestCase
 
 from ..helpers import get_mapped_url, check_mapped_url
@@ -37,8 +39,8 @@ class TestGetMappedURL(TestCase):
 
     def test_url_map_bad_function_without_error(self):
         with self.settings(
-            URLMAPPER_FUNCTIONS={'test_3': lambda: [][0]},
-            URLMAPPER_RAISE_EXCEPTION=False
+                URLMAPPER_FUNCTIONS={'test_3': lambda: [][0]},
+                URLMAPPER_RAISE_EXCEPTION=False
         ):
             reload(settings)
             self.assertEquals(get_mapped_url('test_3'), '')
