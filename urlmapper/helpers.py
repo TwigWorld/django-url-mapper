@@ -1,5 +1,6 @@
-from models import URLMap
 from django.conf import settings
+
+from .models import URLMap
 
 
 def get_mapped_url(key, request=None):
@@ -21,7 +22,7 @@ def get_mapped_url(key, request=None):
                 return settings.URLMAPPER_FUNCTIONS[key](request)
             except TypeError:
                 return settings.URLMAPPER_FUNCTIONS[key]()
-        except Exception, e:
+        except Exception as e:
             if settings.URLMAPPER_RAISE_EXCEPTION:
                 raise e
             return ''
@@ -39,8 +40,8 @@ def check_mapped_url(key):
     return bool(
         key in settings.URLMAPPER_KEYS
         and (
-            key in settings.URLMAPPER_FUNCTIONS
-            or URLMap.objects.filter(key=key).exists()
+                key in settings.URLMAPPER_FUNCTIONS
+                or URLMap.objects.filter(key=key).exists()
         )
         and get_mapped_url(key)
     )
