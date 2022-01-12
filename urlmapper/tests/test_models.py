@@ -1,3 +1,6 @@
+# py3
+from builtins import str as unicode
+
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
