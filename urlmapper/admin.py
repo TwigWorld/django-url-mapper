@@ -1,13 +1,12 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from models import URLMap
+from .models import URLMap
 
 import settings
 
 
 class URLMapAdmin(admin.ModelAdmin):
-
     list_display = ('key', 'mapping_type', 'get_url')
 
     fieldsets = [(None, {'fields': ('key',)})]
