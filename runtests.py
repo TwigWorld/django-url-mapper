@@ -29,7 +29,7 @@ settings.configure(
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
     ),
-    ROOT_URLCONF=('urlmapper.tests.urls'),
+    ROOT_URLCONF='urlmapper.tests.urls',
     SITE_ID=1,
 
     TEMPLATES=[
