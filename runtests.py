@@ -1,5 +1,12 @@
+# import os
+import django
+
 from django.conf import settings
 from django.core.management import call_command
+
+# path to django-url-mapper
+# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 
 settings.configure(
 
@@ -16,6 +23,7 @@ settings.configure(
         'django.contrib.sites',
         'urlmapper'
     ),
+
     STATIC_URL='/',
     MIDDLEWARE_CLASSES=(
         'django.contrib.sessions.middleware.SessionMiddleware',
@@ -23,11 +31,22 @@ settings.configure(
     ),
     ROOT_URLCONF=('urlmapper.tests.urls'),
     SITE_ID=1,
-    TEMPLATE_CONTEXT_PROCESSORS=(
-        'django.contrib.auth.context_processors.auth',
-        'django.core.context_processors.i18n',
-        'django.core.context_processors.request',
-    ),
+
+    TEMPLATES=[
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'APP_DIRS': True,
+            'OPTIONS': {
+                'context_processors': [
+                    'django.template.context_processors.debug',
+                    'django.template.context_processors.request',
+                    'django.contrib.auth.context_processors.auth',
+                    'django.contrib.messages.context_processors.messages',
+                ],
+            },
+        },
+    ],
+
     URLMAPPER_KEYS=[
         'test_1',
         'test_2',
@@ -40,5 +59,6 @@ settings.configure(
         'test_2': lambda request: 'test_2_success'
     },
 )
+django.setup()
 
 call_command('test')
