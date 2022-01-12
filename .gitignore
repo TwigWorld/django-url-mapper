@@ -1,2 +1,8 @@
 *.py[cod]
 .coverage
+
+# pycharm
+.idea/
+
+# pyenv
+.python-version
