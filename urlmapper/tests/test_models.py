@@ -2,11 +2,10 @@
 from builtins import str as unicode
 
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
-from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
-from typing import List
 
 from ..models import URLMap
 
@@ -25,7 +24,6 @@ class TestModels(TestCase):
 
     def test_get_key_choices(self):
         self.assertEquals(
-            # #set(self.url_map._meta.get_field_by_name('key')[0].choices),
             set(self.url_map._meta.get_field(field_name='key').choices),
             set(
                 (

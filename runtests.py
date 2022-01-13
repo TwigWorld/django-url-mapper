@@ -1,12 +1,7 @@
-# import os
 import django
 
 from django.conf import settings
 from django.core.management import call_command
-
-# path to django-url-mapper
-# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
 
 settings.configure(
 
