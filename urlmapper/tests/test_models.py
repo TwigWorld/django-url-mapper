@@ -35,7 +35,6 @@ class TestModels(TestCase):
                 )
             )
         )
-        print(set(self.url_map._meta.get_field(field_name='key').choices))
 
 
 def test_invalid_map_does_not_show(self):
