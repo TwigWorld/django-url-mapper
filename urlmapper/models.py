@@ -21,10 +21,6 @@ def _get_key_choices():
     if not keys:
         return [('', ugettext("There are no defined keys"))]
 
-    ######### debugging #############
-    print(f"In models: {list(zip(keys, keys))}")
-    ######### debugging #############
-
     return list(zip(keys, keys))
 
 

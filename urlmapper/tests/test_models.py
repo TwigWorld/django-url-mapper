@@ -26,7 +26,7 @@ class TestModels(TestCase):
     def test_get_key_choices(self):
         self.assertEquals(
             # #set(self.url_map._meta.get_field_by_name('key')[0].choices),
-            set(set(self.url_map._meta.get_field('key')[0].choices)),
+            set(self.url_map._meta.get_field(field_name='key').choices),
             set(
                 (
                     ('test_3', 'test_3'),
@@ -35,19 +35,6 @@ class TestModels(TestCase):
                 )
             )
         )
-
-        my_obj = set((('test_3', 'test_3'), ('test_4', 'test_4'), ('test_5', 'test_5')))
-        print(f"my_obj: {[e for e in my_obj]}", "\n")
-
-        my_obj2 = (self.url_map._meta.get_field('key')[0])
-        print(f"my_obj2: {[e for e in my_obj2]}", "\n")
-        # print(f"Here: {(self.url_map._meta.get_field('key'))}")
-
-        # try:
-        #     some_object_iterator = iter(my_obj2)
-        #     print(f"{some_object_iterator} is an iterator")
-        # except TypeError as te:
-        #     print(my_obj2, 'is not iterable')
 
 
 def test_invalid_map_does_not_show(self):
