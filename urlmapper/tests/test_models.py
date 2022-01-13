@@ -35,6 +35,7 @@ class TestModels(TestCase):
                 )
             )
         )
+        print(set(self.url_map._meta.get_field(field_name='key').choices))
 
 
 def test_invalid_map_does_not_show(self):
@@ -73,23 +74,24 @@ def test_only_valid_url_allowed(self):
     self.assertIsNone(map.full_clean())
 
 
-# def test_only_valid_object_allowed(self):
-#     # No get_absolute_url on site
-#     site = Site.objects.first()
-#     map = URLMap(
-#         key='test_4',
-#         content_object=site
-#     )
-#     with self.assertRaises(ValidationError):
-#         map.full_clean()
-#
-#     # get_absolute_url on user
-#     user = User.objects.create_user('test')
-#     map = URLMap(
-#         key='test_4',
-#         content_object=user
-#     )
-#     self.assertIsNone(map.full_clean())
+def test_only_valid_object_allowed(self):
+    # No get_absolute_url on site
+    site = Site.objects.first()
+    map = URLMap(
+        key='test_4',
+        content_object=site
+    )
+    with self.assertRaises(ValidationError):
+        map.full_clean()
+
+    # get_absolute_url on user
+    user = User.objects.create_user('test')
+    map = URLMap(
+        key='test_4',
+        content_object=user
+    )
+    self.assertIsNone(map.full_clean())
+
 
 def test_only_valid_view_allowed(self):
     map = URLMap(
