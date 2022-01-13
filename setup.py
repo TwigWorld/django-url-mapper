@@ -8,7 +8,7 @@ setup(
     description='Use fixed keys in your Django template to refer to dynamic URLs',
     long_description=open('README.md').read(),
     install_requires=[
-        "Django==1.11.29",
+        "Django>=1.11.29",
     ],
     packages=find_packages(),
     include_package_data=True
