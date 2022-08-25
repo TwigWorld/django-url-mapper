@@ -7,7 +7,7 @@ setup(
     scripts=[],
     description='Use fixed keys in your Django template to refer to dynamic URLs',
     long_description=open('README.md').read(),
-    python_requires='>=3.7.0'
+    python_requires='>=3.7.0',
     install_requires=[
         "Django>=1.11.29, <2.0",
     ],
