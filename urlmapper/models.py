@@ -1,10 +1,14 @@
-from django.contrib.contenttypes.generic import GenericForeignKey
+from __future__ import unicode_literals
+
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse, resolve, NoReverseMatch, Resolver404
 from django.db import models
 from django.utils.translation import ugettext_lazy as _, ugettext
+# django/py3
+from django.utils.encoding import python_2_unicode_compatible
 
-import settings
+from urlmapper import settings
 
 
 def _get_key_choices():
@@ -16,7 +20,8 @@ def _get_key_choices():
     )
     if not keys:
         return [('', ugettext("There are no defined keys"))]
-    return zip(keys, keys)
+
+    return list(zip(keys, keys))
 
 
 def _get_content_type_choices():
@@ -38,6 +43,7 @@ class URLMapVisibleMananger(models.Manager):
         return queryset.exclude(key__in=settings.URLMAPPER_FUNCTIONS.keys())
 
 
+@python_2_unicode_compatible
 class URLMap(models.Model):
     """
     Map a key to a URL in the database. This could be a straight-up URL, an
@@ -91,7 +97,7 @@ class URLMap(models.Model):
     objects = URLMapVisibleMananger()
     _objects = models.Manager()
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{key} --> {url}".format(
             key=self.key,
             url=self.get_url()
@@ -223,6 +229,7 @@ class URLMap(models.Model):
         if self.view_name:
             return self._get_view_url(raise_exception=False)
         return ''
+
     get_url.short_description = _('URL')
 
     def mapping_type(self):
@@ -232,6 +239,7 @@ class URLMap(models.Model):
             return _("Object")
         if self.view_name:
             return _("View")
+
     mapping_type.short_description = _("Mapping type")
 
     class Meta:

@@ -1,3 +1,5 @@
+from importlib import reload
+
 from django.test import TestCase
 
 from ..helpers import get_mapped_url, check_mapped_url
