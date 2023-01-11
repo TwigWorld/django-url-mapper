@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse, resolve, NoReverseMatch, Resolver404
+from django.urls import reverse, resolve, NoReverseMatch, Resolver404
 from django.db import models
 from django.utils.translation import ugettext_lazy as _, ugettext
 # django/py3
@@ -70,7 +70,8 @@ class URLMap(models.Model):
         verbose_name=_("Content Type"),
         limit_choices_to=_get_content_type_choices(),
         blank=True,
-        null=True
+        null=True,
+        on_delete=models.CASCADE
     )
     object_id = models.PositiveIntegerField(
         _("Object ID"),
