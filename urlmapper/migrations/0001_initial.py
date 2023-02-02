@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('object_id', models.PositiveIntegerField(null=True, verbose_name='Object ID', blank=True)),
                 ('view_name', models.CharField(max_length=255, verbose_name='View name', blank=True)),
                 ('view_keywords', models.TextField(help_text='Use a=b to define keywords and commas to separate e.g slug=terms-and-conditions, language=en', verbose_name='View keywords', blank=True)),
-                ('content_type', models.ForeignKey(verbose_name='Content Type', blank=True, to='contenttypes.ContentType', null=True)),
+                ('content_type', models.ForeignKey(on_delete=models.deletion.CASCADE, verbose_name='Content Type', blank=True, to='contenttypes.ContentType', null=True)),
             ],
             options={
                 'verbose_name': 'URL map',
