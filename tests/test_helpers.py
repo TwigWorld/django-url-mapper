@@ -1,4 +1,8 @@
-from importlib import reload
+try:
+    from importlib import reload
+except ImportError:
+    # python2
+    pass
 
 from django.test import TestCase
 
