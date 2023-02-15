@@ -3,8 +3,8 @@ from importlib import reload
 from django.template import Template, Context
 from django.test import TestCase
 
-from .. import settings
-from ..models import URLMap
+from urlmapper import settings
+from urlmapper.models import URLMap
 
 
 class TestTags(TestCase):
