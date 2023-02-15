@@ -4,12 +4,9 @@ from django.conf import settings
 
 # PYTHON3 use pathlib
 TEST_FOLDER = os.path.dirname(os.path.abspath(__file__))
-# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "urlmapper.settings")
 
 
 def pytest_configure():
-    # import pdb;pdb.set_trace()
-    # from urlmapper import settings
     settings.configure(
         DATABASES={
             "default": {
