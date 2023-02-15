@@ -1,5 +1,3 @@
-from builtins import str as unicode
-
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
@@ -135,6 +133,6 @@ class TestModels(TestCase):
 
     def test_get_mapping_type(self):
         self.assertEquals(
-            unicode(self.url_map.mapping_type()),
+            self.url_map.mapping_type(),
             u"Direct"
         )
