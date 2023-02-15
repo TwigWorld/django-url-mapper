@@ -9,7 +9,7 @@ setup(
     long_description=open('README.md').read(),
     python_requires='>=3.7.0',
     install_requires=[
-        "Django>=1.11.29, <2.0",
+        "Django>=2.2, <3.0",
     ],
     packages=find_packages(),
     include_package_data=True
