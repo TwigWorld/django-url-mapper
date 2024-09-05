@@ -1,12 +1,6 @@
-try:
-    from importlib import reload
-except ImportError:
-    # python2
-    pass
-
+from importlib import reload
 from django.template import Template, Context
 from django.test import TestCase
-
 from urlmapper import settings
 from urlmapper.models import URLMap
 

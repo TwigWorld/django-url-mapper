@@ -1,12 +1,8 @@
-from __future__ import unicode_literals
-
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.exceptions import ValidationError
 from django.urls import reverse, resolve, NoReverseMatch, Resolver404
 from django.db import models
-from django.utils.translation import ugettext_lazy as _, ugettext
-# django/py3
-from django.utils.encoding import python_2_unicode_compatible
+from django.utils.translation import gettext_lazy as _, gettext
 
 from urlmapper import settings
 
@@ -19,7 +15,7 @@ def _get_key_choices():
         set(settings.URLMAPPER_KEYS) - set(settings.URLMAPPER_FUNCTIONS.keys())
     )
     if not keys:
-        return [('', ugettext("There are no defined keys"))]
+        return [('', gettext("There are no defined keys"))]
 
     return list(zip(keys, keys))
 
@@ -43,7 +39,6 @@ class URLMapVisibleMananger(models.Manager):
         return queryset.exclude(key__in=settings.URLMAPPER_FUNCTIONS.keys())
 
 
-@python_2_unicode_compatible
 class URLMap(models.Model):
     """
     Map a key to a URL in the database. This could be a straight-up URL, an
@@ -99,7 +94,7 @@ class URLMap(models.Model):
     _objects = models.Manager()
 
     def __str__(self):
-        return u"{key} --> {url}".format(
+        return "{key} --> {url}".format(
             key=self.key,
             url=self.get_url()
         )
@@ -135,7 +130,7 @@ class URLMap(models.Model):
                 resolve(self.url)
             except Resolver404:
                 raise ValidationError(
-                    ugettext(
+                    gettext(
                         "URL {url} does not correspond to a valid application view."
                     ).format(
                         url=self.url
@@ -146,13 +141,13 @@ class URLMap(models.Model):
         if self.content_type is not None or self.object_id is not None:
             if self.content_type is None or self.object_id is None:
                 raise ValidationError(
-                    ugettext(
+                    gettext(
                         "Please supply both a content type and object ID."
                     )
                 )
             if not self.content_object:
                 raise ValidationError(
-                    ugettext(
+                    gettext(
                         "Object with type {type} and ID {id} does not exist"
                     ).format(
                         type=self.content_type,
@@ -161,7 +156,7 @@ class URLMap(models.Model):
                 )
             if getattr(self.content_object, 'get_absolute_url', None) is None:
                 raise ValidationError(
-                    ugettext(
+                    gettext(
                         "Object with type {type} and ID {id} does not have a "
                         "get_absolute_url method."
                     ).format(
@@ -173,7 +168,7 @@ class URLMap(models.Model):
     def _validate_view(self):
         if self.view_keywords and not self.view_name:
             raise ValidationError(
-                ugettext(
+                gettext(
                     "View keywords supplied but no view name provided"
                 )
             )
@@ -181,7 +176,7 @@ class URLMap(models.Model):
             kwargs = self._get_view_kwargs()
         except:
             raise ValidationError(
-                ugettext(
+                gettext(
                     "Keywords are not in the format a=b, c=d"
                 )
             )
@@ -190,7 +185,7 @@ class URLMap(models.Model):
                 self._get_view_url()
             except NoReverseMatch:
                 raise ValidationError(
-                    ugettext(
+                    gettext(
                         "No match for view {view} and keyword arguments {kwargs}."
                     ).format(
                         view=self.view_name,
@@ -208,7 +203,7 @@ class URLMap(models.Model):
         )
         if num_supplied_values != 1:
             raise ValidationError(
-                ugettext(
+                gettext(
                     "Please supply exactly one form of URL mapping ({n} supplied).".format(
                         n=num_supplied_values
                     )

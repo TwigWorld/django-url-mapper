@@ -21,22 +21,16 @@ class TestModels(TestCase):
         )
 
     def test_get_key_choices(self):
-        self.assertEquals(
-            set(self.url_map._meta.get_field(field_name='key').choices),
-            set(
-                (
-                    ('test_3', 'test_3'),
-                    ('test_4', 'test_4'),
-                    ('test_5', 'test_5')
-                )
+        assert set(self.url_map._meta.get_field(field_name='key').choices) == set(
+            (
+                ('test_3', 'test_3'),
+                ('test_4', 'test_4'),
+                ('test_5', 'test_5')
             )
         )
 
     def test_invalid_map_does_not_show(self):
-        self.assertEquals(
-            list(URLMap.objects.all()),
-            [self.url_map]
-        )
+        assert list(URLMap.objects.all()) == [self.url_map]
 
     def test_only_one_mapping_allowed(self):
         # No mapping
@@ -129,10 +123,7 @@ class TestModels(TestCase):
         self.assertIsNone(map.full_clean())
 
     def test_get_url(self):
-        self.assertEquals(self.url_map.get_url(), '/test/3/')
+        assert self.url_map.get_url() == '/test/3/'
 
     def test_get_mapping_type(self):
-        self.assertEquals(
-            self.url_map.mapping_type(),
-            u"Direct"
-        )
+        assert self.url_map.mapping_type() == "Direct"
