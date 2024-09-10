@@ -1,9 +1,7 @@
-import os
-
+from pathlib import Path
 from django.conf import settings
 
-# PYTHON3 use pathlib
-TEST_FOLDER = os.path.dirname(os.path.abspath(__file__))
+TEST_FOLDER = Path(__file__).resolve().parent
 
 
 def pytest_configure():
