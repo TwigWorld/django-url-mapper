@@ -1,8 +1,12 @@
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.exceptions import ValidationError
-from django.urls import reverse, resolve, NoReverseMatch, Resolver404
 from django.db import models
-from django.utils.translation import gettext_lazy as _, gettext
+from django.urls import NoReverseMatch
+from django.urls import Resolver404
+from django.urls import resolve
+from django.urls import reverse
+from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
 
 from urlmapper import settings
 
@@ -11,11 +15,9 @@ def _get_key_choices():
     """
     Return all the keys that are not mapped to functions, as a list of choices.
     """
-    keys = list(
-        set(settings.URLMAPPER_KEYS) - set(settings.URLMAPPER_FUNCTIONS.keys())
-    )
+    keys = list(set(settings.URLMAPPER_KEYS) - set(settings.URLMAPPER_FUNCTIONS.keys()))
     if not keys:
-        return [('', gettext("There are no defined keys"))]
+        return [("", gettext("There are no defined keys"))]
 
     return list(zip(keys, keys))
 
@@ -28,12 +30,11 @@ def _get_content_type_choices():
     for app_label, model in settings.URLMAPPER_CONTENTTYPES:
         filters |= models.Q(app_label=app_label, model=model)
     # Always exclude this app
-    filters &= ~models.Q(app_label='urlmapper')
+    filters &= ~models.Q(app_label="urlmapper")
     return filters
 
 
 class URLMapVisibleMananger(models.Manager):
-
     def get_queryset(self):
         queryset = super(URLMapVisibleMananger, self).get_queryset()
         return queryset.exclude(key__in=settings.URLMAPPER_FUNCTIONS.keys())
@@ -44,68 +45,52 @@ class URLMap(models.Model):
     Map a key to a URL in the database. This could be a straight-up URL, an
     object that has a get_absolute_url method, or a view name and keyword args.
     """
+
     key = models.CharField(
-        _("Key"),
-        max_length=64,
-        unique=True,
-        choices=_get_key_choices()
+        _("Key"), max_length=64, unique=True, choices=_get_key_choices()
     )
 
     # Map to a URL
     url = models.CharField(
-        _("URL"),
-        max_length=255,
-        help_text=_("Enter a relative URL"),
-        blank=True
+        _("URL"), max_length=255, help_text=_("Enter a relative URL"), blank=True
     )
 
     # Map to an object
     content_type = models.ForeignKey(
-        'contenttypes.ContentType',
+        "contenttypes.ContentType",
         verbose_name=_("Content Type"),
         limit_choices_to=_get_content_type_choices(),
         blank=True,
         null=True,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
-    object_id = models.PositiveIntegerField(
-        _("Object ID"),
-        null=True,
-        blank=True
-    )
+    object_id = models.PositiveIntegerField(_("Object ID"), null=True, blank=True)
     content_object = GenericForeignKey()
 
     # Map to a view
-    view_name = models.CharField(
-        _("View name"),
-        max_length=255,
-        blank=True
-    )
+    view_name = models.CharField(_("View name"), max_length=255, blank=True)
     view_keywords = models.TextField(
         _("View keywords"),
         help_text=_(
             "Use a=b to define keywords and commas to separate e.g "
             "slug=terms-and-conditions, language=en"
         ),
-        blank=True
+        blank=True,
     )
 
     objects = URLMapVisibleMananger()
     _objects = models.Manager()
 
     def __str__(self):
-        return "{key} --> {url}".format(
-            key=self.key,
-            url=self.get_url()
-        )
+        return "{key} --> {url}".format(key=self.key, url=self.get_url())
 
     def _get_view_kwargs(self, raise_exception=True):
         if not self.view_keywords:
             return {}
         try:
             return {
-                keyword.split('=')[0].strip(): keyword.split('=')[1].strip()
-                for keyword in self.view_keywords.split(',')
+                keyword.split("=")[0].strip(): keyword.split("=")[1].strip()
+                for keyword in self.view_keywords.split(",")
                 if keyword
             }
         except Exception as e:
@@ -116,13 +101,12 @@ class URLMap(models.Model):
     def _get_view_url(self, raise_exception=True):
         try:
             return reverse(
-                self.view_name,
-                kwargs=self._get_view_kwargs(raise_exception=False)
+                self.view_name, kwargs=self._get_view_kwargs(raise_exception=False)
             )
         except NoReverseMatch as e:
             if raise_exception:
                 raise e
-            return ''
+            return ""
 
     def _validate_url(self):
         if self.url:
@@ -132,54 +116,38 @@ class URLMap(models.Model):
                 raise ValidationError(
                     gettext(
                         "URL {url} does not correspond to a valid application view."
-                    ).format(
-                        url=self.url
-                    )
+                    ).format(url=self.url)
                 )
 
     def _validate_object(self):
         if self.content_type is not None or self.object_id is not None:
             if self.content_type is None or self.object_id is None:
                 raise ValidationError(
-                    gettext(
-                        "Please supply both a content type and object ID."
-                    )
+                    gettext("Please supply both a content type and object ID.")
                 )
             if not self.content_object:
                 raise ValidationError(
                     gettext(
                         "Object with type {type} and ID {id} does not exist"
-                    ).format(
-                        type=self.content_type,
-                        id=self.object_id
-                    )
+                    ).format(type=self.content_type, id=self.object_id)
                 )
-            if getattr(self.content_object, 'get_absolute_url', None) is None:
+            if getattr(self.content_object, "get_absolute_url", None) is None:
                 raise ValidationError(
                     gettext(
                         "Object with type {type} and ID {id} does not have a "
                         "get_absolute_url method."
-                    ).format(
-                        type=self.content_type,
-                        id=self.object_id
-                    )
+                    ).format(type=self.content_type, id=self.object_id)
                 )
 
     def _validate_view(self):
         if self.view_keywords and not self.view_name:
             raise ValidationError(
-                gettext(
-                    "View keywords supplied but no view name provided"
-                )
+                gettext("View keywords supplied but no view name provided")
             )
         try:
             kwargs = self._get_view_kwargs()
         except:
-            raise ValidationError(
-                gettext(
-                    "Keywords are not in the format a=b, c=d"
-                )
-            )
+            raise ValidationError(gettext("Keywords are not in the format a=b, c=d"))
         if self.view_name:
             try:
                 self._get_view_url()
@@ -187,10 +155,7 @@ class URLMap(models.Model):
                 raise ValidationError(
                     gettext(
                         "No match for view {view} and keyword arguments {kwargs}."
-                    ).format(
-                        view=self.view_name,
-                        kwargs=kwargs
-                    )
+                    ).format(view=self.view_name, kwargs=kwargs)
                 )
 
     def _validate_single_mapping(self):
@@ -198,7 +163,7 @@ class URLMap(models.Model):
             (
                 bool(self.url),
                 self.content_type is not None or self.object_id is not None,
-                bool(self.view_name or self.view_keywords)
+                bool(self.view_name or self.view_keywords),
             )
         )
         if num_supplied_values != 1:
@@ -224,9 +189,9 @@ class URLMap(models.Model):
             return self.content_object.get_absolute_url()
         if self.view_name:
             return self._get_view_url(raise_exception=False)
-        return ''
+        return ""
 
-    get_url.short_description = _('URL')
+    get_url.short_description = _("URL")
 
     def mapping_type(self):
         if self.url:

@@ -1,15 +1,18 @@
 from importlib import reload
-from django.template import Template, Context
+
+from django.template import Context
+from django.template import Template
 from django.test import TestCase
+
 from urlmapper import settings
 from urlmapper.models import URLMap
 
 
 class TestTags(TestCase):
-
     def setUp(self):
-        self.context = Context({'request': None})
-        self.template = Template("""
+        self.context = Context({"request": None})
+        self.template = Template(
+            """
         {% load urlmapper_tags %}
         test_1_is_mapped:({{ 'test_1'|is_mapped_url }})
         test_2_is_mapped:({{ 'test_2'|is_mapped_url }})
@@ -24,9 +27,10 @@ class TestTags(TestCase):
         test_4_url:({% mapped_url 'test_4' %})
         test_5_url:({% mapped_url 'test_5' %})
         test_6_url:({% mapped_url 'test_6' %})
-        """)
-        URLMap.objects.create(key='test_3', url='test_3_success')
-        URLMap.objects.create(key='test_4')
+        """
+        )
+        URLMap.objects.create(key="test_3", url="test_3_success")
+        URLMap.objects.create(key="test_4")
 
     def test_output(self):
         with self.settings(URLMAPPER_RAISE_EXCEPTION=False):
