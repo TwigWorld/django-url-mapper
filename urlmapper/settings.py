@@ -1,21 +1,18 @@
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 
+_DEFAULT_URLMAPPER_ALLOWED_MAPPINGS = ["url", "object", "view_name"]
 
-_DEFAULT_URLMAPPER_ALLOWED_MAPPINGS = ['url', 'object', 'view_name']
+URLMAPPER_RAISE_EXCEPTION = getattr(settings, "URLMAPPER_RAISE_EXCEPTION", True)
 
-URLMAPPER_RAISE_EXCEPTION = getattr(settings, 'URLMAPPER_RAISE_EXCEPTION', True)
+URLMAPPER_KEYS = getattr(settings, "URLMAPPER_KEYS", [])
 
-URLMAPPER_KEYS = getattr(settings, 'URLMAPPER_KEYS', [])
+URLMAPPER_FUNCTIONS = getattr(settings, "URLMAPPER_FUNCTIONS", {})
 
-URLMAPPER_FUNCTIONS = getattr(settings, 'URLMAPPER_FUNCTIONS', {})
-
-URLMAPPER_CONTENTTYPES = getattr(settings, 'URLMAPPER_CONTENTTYPES', [])
+URLMAPPER_CONTENTTYPES = getattr(settings, "URLMAPPER_CONTENTTYPES", [])
 
 URLMAPPER_ALLOWED_MAPPINGS = getattr(
-    settings,
-    'URLMAPPER_ALLOWED_MAPPINGS',
-    _DEFAULT_URLMAPPER_ALLOWED_MAPPINGS
+    settings, "URLMAPPER_ALLOWED_MAPPINGS", _DEFAULT_URLMAPPER_ALLOWED_MAPPINGS
 )
 
 

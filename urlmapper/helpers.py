@@ -10,11 +10,9 @@ def get_mapped_url(key, request=None):
     if key not in settings.URLMAPPER_KEYS:
         if settings.URLMAPPER_RAISE_EXCEPTION:
             raise KeyError(
-                "Key '{key}' does not exist in settings.URLMAPPER_KEYS".format(
-                    key=key
-                )
+                "Key '{key}' does not exist in settings.URLMAPPER_KEYS".format(key=key)
             )
-        return ''
+        return ""
 
     if key in settings.URLMAPPER_FUNCTIONS:
         try:
@@ -25,12 +23,12 @@ def get_mapped_url(key, request=None):
         except Exception as e:
             if settings.URLMAPPER_RAISE_EXCEPTION:
                 raise e
-            return ''
+            return ""
 
     try:
         return URLMap.objects.get(key=key).get_url()
     except URLMap.DoesNotExist:
-        return ''
+        return ""
 
 
 def check_mapped_url(key):
@@ -40,8 +38,8 @@ def check_mapped_url(key):
     return bool(
         key in settings.URLMAPPER_KEYS
         and (
-                key in settings.URLMAPPER_FUNCTIONS
-                or URLMap.objects.filter(key=key).exists()
+            key in settings.URLMAPPER_FUNCTIONS
+            or URLMap.objects.filter(key=key).exists()
         )
         and get_mapped_url(key)
     )
